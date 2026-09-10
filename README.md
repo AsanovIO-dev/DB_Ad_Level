@@ -12,3 +12,7 @@
 sudo docker compose up -d
 ```
 
+### Ссылки
+1. Docker для Windows - https://docs.docker.com/desktop/setup/install/windows-install/
+2. Docker compose v2 for Linux - https://docs.docker.com/compose/install/linux/
+3. Работа с Git - https://www.atlassian.com/ru/git/glossary#commands
