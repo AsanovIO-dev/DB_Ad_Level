@@ -1,5 +1,5 @@
 -- Миграционный скрипт
--- 2026-09-23
+-- 2026-09-27
 drop table if exists military_ranks;
 drop table if exists employees;
 drop table if exists measurment_types;
@@ -14,8 +14,8 @@ drop table if exists measurment_base_units;
 -- 1. Справочник должностей
 create table military_ranks
 (
-	id integer, -- Хранение чисел без дробной части 
-	description character varying(255) --храниние строк Фиксированной максимльной длины  
+	id integer,
+	description character varying(255)
 );
 
 comment on table military_ranks is 'Справочник должностей';
@@ -24,7 +24,7 @@ comment on column military_ranks.description is 'Описание';
 
 -- Заполняем данные
 insert into military_ranks(id, description)
-values(1,'Рядовой'),(2,'Лейтенант');
+values(1,'Метеоролог'),(2,'Оператор метеопоста'),(3,'Начальник метеопоста');
 
 
 
@@ -33,7 +33,7 @@ create table employees
 (
     id integer,
 	name text,
-	birthday timestamp, -- хранение дыты и времени 
+	birthday timestamp,
 	military_rank_id integer
 );
 
@@ -43,9 +43,11 @@ comment on column employees.name is 'Наименование';
 comment on column employees.birthday is 'Дата рождения';
 comment on column employees.military_rank_id is 'Уникальный код должности';
 
--- Заполняем данные
-insert into employees(id, name, birthday,military_rank_id )  
-values(1, 'Воловиков Александр Сергеевич','1978-06-24', 2);
+-- Заполняем данные (дата рождения в старом скрипте не указана — оставляем NULL)
+insert into employees(id, name, military_rank_id)
+values(1, 'Иванов Иван Иванович', 1),
+(2, 'Петров Пётр Петрович', 2),
+(3, 'Александров Александр Александрович', 3);
 
 
 
@@ -64,8 +66,8 @@ comment on column measurment_types.description is 'Описание';
 
 -- Заполняем данные
 insert into measurment_types(id, short_name, description)
-values(1, 'ДМК', 'Десантный метео комплекс'),
-(2,'ВР','Ветровое ружье');
+values(1, 'ДМК', 'Десантный метео комплект'),
+(2,'ВР','Ветровое ружьё');
 
 
 
@@ -93,13 +95,25 @@ alter table measurment_input_params drop column if exists pressure;
 alter table measurment_input_params drop column if exists wind_direction;
 alter table measurment_input_params drop column if exists wind_speed;
 
--- Заполняем данные
+-- Заполняем данные 
 insert into measurment_input_params(id, measurment_bath_id, parameter_type_id, value)
 values(1, 1, 1, 100),
-(2, 1, 2, 12),
-(3, 1, 3, 34),
-(4, 1, 4, 0.2),
-(5, 1, 5, 45);
+(2, 1, 2, 25.0),       
+(3, 1, 3, 765),       
+(4, 1, 4, 15),          
+(5, 1, 5, 6),         
+
+(6, 2, 1, 60),          
+(7, 2, 2, -5.5),        
+(8, 2, 3, 743),        
+(9, 2, 4, 7),       
+(10, 2, 6, 40),
+
+(11, 3, 1, 100),
+(12, 3, 2, 15.0),
+(13, 3, 3, 750),      
+(14, 3, 4, 0),       
+(15, 3, 5, 0);          
 
 
 
@@ -117,13 +131,13 @@ comment on column measurment_baths.emploee_id is 'Уникальный код п
 comment on column measurment_baths.measurment_type_id is 'Уникальный код оборудования';
 comment on column measurment_baths.started is 'Дата измерения';
 
--- Заполняем данные
+-- Заполняем данные (дат в старом скрипте не было — присвоены по порядку)
 insert into measurment_baths(id, emploee_id, measurment_type_id, started)
-values(1, 1, 1, '2026-09-01'),(2,1,2, '2026-09-02');
+values(1, 1, 1, '2026-09-01'),(2, 2, 2, '2026-09-02'),(3, 3, 1, '2026-09-03');
 
 
 
--- 6.Базовые единицы измерения 
+-- 6. Базовые единицы измерения 
 create table measurment_base_units 
 (
  	id integer,
@@ -178,13 +192,14 @@ comment on column measurment_parameter_types.unit_id is 'Уникальный к
 comment on column measurment_parameter_types.short_name is 'Краткое наименование';
 comment on column measurment_parameter_types.description is 'Описание';
 
--- Заполняем данные
+-- Заполняем данные (добавлен новый тип "Дальность сноса пуль" — использует ту же единицу-метр, что и высота)
 insert into measurment_parameter_types(id, unit_id, short_name, description)
 values(1,1,'Высота','Высота площадки/точки замера'),
 (2,2,'Температура','Температура воздуха'),
 (3,3,'Давление','Атмосферное давление'),
 (4,4,'Направление ветра','Направление ветра'),
-(5,5,'Скорость ветра','Скорость ветра');
+(5,5,'Скорость ветра','Скорость ветра'),
+(6,1,'Дальность сноса пуль','Дальность сноса пуль (используется при варианте ВР)');
 
 ---------------------------------------------------
 -- Итоговый запрос
@@ -207,4 +222,3 @@ inner join measurment_parameter_types pt
 inner join measurment_units u
 	on u.id = pt.unit_id
 order by b.id, 	pt.id;
-
