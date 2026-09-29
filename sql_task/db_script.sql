@@ -147,11 +147,6 @@ values(1,1,'Высота','Высота площадки/точки замера
 (5,5,'Скорость ветра','Скорость ветра'),
 (6,1,'Дальность сноса пуль','Дальность сноса пуль (используется при варианте ВР)');
 
-select * from military_ranks;
-select * from employees;
-select * from measurment_types;
-select * from measurment_baths;
-select * from measurment_input_params;
 
 select
 	b.started as "Дата измерения",
