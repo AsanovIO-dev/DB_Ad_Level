@@ -1,7 +1,7 @@
 
 -- 1. positions -> military_ranks
 alter table positions rename to military_ranks;
-alter table military_ranks column code to id; 
+alter table military_ranks rename column code to id; 
 alter table military_ranks rename column name to description;
 
 comment on table military_ranks is 'Справочник должностей';
