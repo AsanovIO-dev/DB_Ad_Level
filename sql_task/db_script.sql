@@ -1,94 +1,167 @@
-DROP TABLE IF EXISTS parameters;
-DROP TABLE IF EXISTS batches;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS positions;
-DROP TABLE IF EXISTS equipment_types;
+
+-- 1. positions -> military_ranks
+alter table positions rename to military_ranks;
+alter table military_ranks rename column code to id; 
+alter table military_ranks rename column name to description;
+
+comment on table military_ranks is 'Справочник должностей';
+comment on column military_ranks.id is 'Уникальный код';
+comment on column military_ranks.description is 'Описание';
 
 
-CREATE TABLE positions
+-- 2. equipment_types -> measurment_types
+alter table equipment_type rename to measurment_types;
+alter table measurment_types rename column code to id;
+alter table measurment_types rename column name to description;
+alter table measurment_types add column short_name character varying(50);
+
+update measurment_types set short_name = 'ДМК', description = 'Десантный метео комплект' where id = 1;
+update measurment_types set short_name = 'ВР', description = 'Ветровое ружьё' where id = 2;
+
+comment on table measurment_types is 'Измерительное оборудование';
+comment on column measurment_types.id is 'Уникальный код';
+comment on column measurment_types.short_name is 'Краткое наименование';
+comment on column measurment_types.description is 'Описание';
+
+
+-- 3. users -> employees
+alter table users rename to employees;
+alter table employees rename column code to id;
+alter table employees rename column full_name to name;
+alter table employees rename column position_code to military_rank_id;
+alter table employees add column birthday timestamp;
+
+comment on table employees is 'Пользователи';
+comment on column employees.id is 'Уникальный код';
+comment on column employees.name is 'Наименование';
+comment on column employees.birthday is 'Дата рождения';
+comment on column employees.military_rank_id is 'Уникальный код должности'; 
+
+
+-- 4. batches -> measurment_baths
+alter table batches rename to measurment_baths;
+alter table measurment_baths rename column code to id;
+alter table measurment_baths rename column user_code to emploee_id;
+alter table measurment_baths rename column equipment_type_code to measurment_type_id;
+alter table measurment_baths add column started timestamp default now();
+
+update measurment_baths set started = '2026-09-01' where id = 1;
+update measurment_baths set started = '2026-09-02' where id = 2;
+update measurment_baths set started = '2026-09-03' where id = 3;
+
+alter table measurment_baths drop column if exists name;
+
+comment on table measurment_baths is 'Пачки';
+comment on column measurment_baths.id is 'Уникальный код';
+comment on column measurment_baths.emploee_id is 'Уникальный код пользователя';
+comment on column measurment_baths.measurment_type_id is 'Уникальный код оборудования';
+comment on column measurment_baths.started is 'Дата измерения';
+
+
+-- 6. parameters -> measurment_input_params
+alter table parameters rename to measurment_input_params;
+alter table measurment_input_params rename column code to id;
+alter table measurment_input_params rename column batch_code to measurment_bath_id;
+alter table measurment_input_params add column parameter_type_id integer;
+
+update measurment_input_params set parameter_type_id = 1 where name = 'Высота метеопоста';
+update measurment_input_params set parameter_type_id = 2 where name = 'Температура';
+update measurment_input_params set parameter_type_id = 3 where name = 'Давление';
+update measurment_input_params set parameter_type_id = 4 where name = 'Направление ветра';
+update measurment_input_params set parameter_type_id = 5 where name = 'Скорость ветра';
+update measurment_input_params set parameter_type_id = 6 where name = 'Дальность сноса пуль';
+
+alter table measurment_input_params drop column name;
+
+-- value было текстом - переводим в число
+alter table measurment_input_params alter column value type numeric(8,2) using value::numeric;
+alter table measurment_input_params alter column value set default 0;
+
+comment on table measurment_input_params is 'Таблица с параметрами';
+comment on column measurment_input_params.id is 'Уникальный код';
+comment on column measurment_input_params.measurment_bath_id is 'Уникальный код пачки';
+comment on column measurment_input_params.parameter_type_id is 'Уникальный код типа параметра';
+comment on column measurment_input_params.value is 'Значение параметра';
+
+
+
+-- 7. measurment_base_units
+create table measurment_base_units
 (
-    code int PRIMARY KEY,
-    name text
+	id integer,
+	description character varying(255)
 );
 
-CREATE TABLE equipment_types
+comment on table measurment_base_units is 'Базовые единицы измерения';
+comment on column measurment_base_units.id is 'Уникальный код';
+comment on column measurment_base_units.description is 'Описание';
+
+insert into measurment_base_units(id, description)
+values(1, 'Длина'), (2, 'Температура'), (3, 'Давление'), (4, 'Угол'), (5, 'Скорость');
+
+
+
+-- 8. measurment_units
+create table measurment_units
 (
-    code int PRIMARY KEY,
-    name text
+	id integer,
+	base_unit_id integer,
+	short_name character varying(50),
+	description text
 );
 
-CREATE TABLE users
+comment on table measurment_units is 'Единицы измерения';
+comment on column measurment_units.id is 'Уникальный код';
+comment on column measurment_units.base_unit_id is 'Уникальный код базовой единицы измерения';
+comment on column measurment_units.short_name is 'Краткое наименование';
+comment on column measurment_units.description is 'Описание';
+
+insert into measurment_units(id, base_unit_id, short_name, description)
+values(1, 1, 'м', 'Метр'),
+(2, 2, 'С', 'Градус Цельсия'),
+(3, 3, 'гПа', 'Гектопаскаль'),
+(4, 4, 'град', 'Градус (угол)'),
+(5, 5, 'м/с', 'Метр в секунду');
+
+
+-- 9. measurment_parameter_types
+create table measurment_parameter_types
 (
-    code          int PRIMARY KEY,
-    full_name     text,
-    position_code int
+	id integer,
+	unit_id integer,
+	short_name character varying(50),
+	description text
 );
 
-CREATE TABLE batches
-(
-    code                 int PRIMARY KEY,
-    name                 text,
-    user_code            int,
-    equipment_type_code  int
-);
+comment on table measurment_parameter_types is 'Типы параметров';
+comment on column measurment_parameter_types.id is 'Уникальный код';
+comment on column measurment_parameter_types.unit_id is 'Уникальный код единицы измерения';
+comment on column measurment_parameter_types.short_name is 'Краткое наименование';
+comment on column measurment_parameter_types.description is 'Описание';
 
-CREATE TABLE parameters
-(
-    code       int PRIMARY KEY,
-    batch_code int,
-    name       text,
-    value      text
-);
+insert into measurment_parameter_types(id, unit_id, short_name, description)
+values(1,1,'Высота','Высота площадки/точки замера'),
+(2,2,'Температура','Температура воздуха'),
+(3,3,'Давление','Атмосферное давление'),
+(4,4,'Направление ветра','Направление ветра'),
+(5,5,'Скорость ветра','Скорость ветра'),
+(6,1,'Дальность сноса пуль','Дальность сноса пуль');
 
 
-INSERT INTO positions (code, name) VALUES (1, 'Метеоролог');
-INSERT INTO positions (code, name) VALUES (2, 'Оператор метеопоста');
-INSERT INTO positions (code, name) VALUES (3, 'Начальник метеопоста');
-
-INSERT INTO equipment_types (code, name) VALUES (1, 'ДМК (десантный метео комплект)');
-INSERT INTO equipment_types (code, name) VALUES (2, 'ВР (ветровое ружьё)');
-
-INSERT INTO users (code, full_name, position_code) VALUES (1, 'Иванов Иван Иванович', 1);
-INSERT INTO users (code, full_name, position_code) VALUES (2, 'Петров Пётр Петрович', 2);
-INSERT INTO users (code, full_name, position_code) VALUES (3, 'Александров Александр Александрович', 3);
-
-INSERT INTO batches (code, name, user_code, equipment_type_code) VALUES (1, 'Пачка замеров №1', 1, 1);
-INSERT INTO batches (code, name, user_code, equipment_type_code) VALUES (2, 'Пачка замеров №2', 2, 2);
-INSERT INTO batches (code, name, user_code, equipment_type_code) VALUES (3, 'Пачка замеров №3', 3, 1);
-
-INSERT INTO parameters (code, batch_code, name, value) VALUES (1, 1, 'Высота метеопоста', '100');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (2, 1, 'Температура', '25.0');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (3, 1, 'Давление', '765');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (4, 1, 'Направление ветра', '15');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (5, 1, 'Скорость ветра', '6');
-
-INSERT INTO parameters (code, batch_code, name, value) VALUES (6, 2, 'Высота метеопоста', '60');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (7, 2, 'Температура', '-5.5');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (8, 2, 'Давление', '743');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (9, 2, 'Направление ветра', '07');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (10, 2, 'Дальность сноса пуль', '40');
-
-INSERT INTO parameters (code, batch_code, name, value) VALUES (11, 3, 'Высота метеопоста', '100');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (12, 3, 'Температура', '15.0');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (13, 3, 'Давление', '750');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (14, 3, 'Направление ветра', '00');
-INSERT INTO parameters (code, batch_code, name, value) VALUES (15, 3, 'Скорость ветра', '0');
-
-
-SELECT
-    u.full_name     AS employee,
-    p.name          AS position_name,
-    b.name          AS batch_name,
-    et.name         AS equipment_type,
-    par.name        AS parameter_name,
-    par.value       AS parameter_value
-FROM users u
-JOIN positions p
-    ON p.code = u.position_code
-JOIN batches b
-    ON b.user_code = u.code
-JOIN equipment_types et
-    ON et.code = b.equipment_type_code
-JOIN parameters par
-    ON par.batch_code = b.code
-ORDER BY b.code, par.code;
+select
+	b.started as "Дата измерения",
+	b.id as "Номер пачки",
+	e.name as "ФИО сотрудника",
+	pt.short_name as "Наименование параметра",
+	u.short_name as "Единица измерения",
+	ip.value as "Значение"
+from measurment_baths b
+inner join employees e
+	on e.id = b.emploee_id
+inner join measurment_input_params ip
+	on ip.measurment_bath_id = b.id
+inner join measurment_parameter_types pt
+	on pt.id = ip.parameter_type_id
+inner join measurment_units u
+	on u.id = pt.unit_id
+order by b.id, pt.id;
