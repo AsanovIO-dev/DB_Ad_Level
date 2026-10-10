@@ -5,29 +5,26 @@ from
 	select min(t1.cnt) as min_cnt, max(t1.cnt) as max_cnt
 	from
 	(
-		select employees.id, count(measurment_input_params.id) as cnt 
-		from employees
+		select employees.id, count(measurment_baths.id) as cnt 
+		from employees 
 		left join measurment_baths 
 			on measurment_baths.emploee_id = employees.id
-		left join measurment_input_params
-			on measurment_input_params.measurment_bath_id = measurment_baths.id
 		group by employees.id
 	) as t1
 )as t2;
 
 
-	
+
 -- 2. Нет пустых пачек измерений?
 select case when min(t1.cnt) = 0 then 'Есть пустые пачки' else 'Все пачки полные' end as check_result
 from (
     select 
-        measurment_baths.id as bath_id, 
-        count(measurment_input_params.id) as cnt 
-    from measurment_baths	
-	left join measurment_input_params
-		on measurment_input_params.measurment_bath_id = measurment_baths.id
-    group by measurment_baths.id 			
+        measurment_input_params.measurment_bath_id as bath_id, 
+        count(public.measurment_input_params.parameter_type_id) as cnt 
+    from measurment_input_params
+    group by measurment_input_params.measurment_bath_id
 ) as t1;
+
 
 
 -- 3. Каждая пачка измерений содержит полное количеситво параметров?
