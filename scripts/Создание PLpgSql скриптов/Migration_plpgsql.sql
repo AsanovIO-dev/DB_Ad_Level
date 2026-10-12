@@ -1,5 +1,4 @@
 -- 1. Таблицы и счётчики
-begin;
 do $$
 begin
     drop table if exists public.temperature_calc;
@@ -15,12 +14,19 @@ begin
         id          integer,
         description text
     );
+    comment on table public.military_ranks is 'Справочник должностей';
+    comment on column public.military_ranks.id is 'Уникальный код';
+    comment on column public.military_ranks.description is 'Название должности';
 
     create table public.employees (
         id               integer,
         name             text,
         military_rank_id integer
     );
+    comment on table public.employees is 'Сотрудники';
+    comment on column public.employees.id is 'Уникальный код';
+    comment on column public.employees.name is 'ФИО сотрудника';
+    comment on column public.employees.military_rank_id is 'Код должности';
 
     create table public.measurements (
         id          integer,
@@ -29,6 +35,12 @@ begin
         temperature numeric(5,1),
         pressure    integer
     );
+    comment on table public.measurements is 'Измерения';
+    comment on column public.measurements.id is 'Уникальный код';
+    comment on column public.measurements.employee_id is 'Код сотрудника';
+    comment on column public.measurements.started is 'Дата и время измерения';
+    comment on column public.measurements.temperature is 'Температура';
+    comment on column public.measurements.pressure is 'Давление';
 
     create table public.temperature_calc (
         id          integer,
@@ -36,6 +48,7 @@ begin
         correction  numeric(3,1)
     );
     comment on table public.temperature_calc is 'Расчёт температуры';
+    comment on column public.temperature_calc.id is 'Уникальный код';
     comment on column public.temperature_calc.t0 is 'Диапазон температуры';
     comment on column public.temperature_calc.correction is 'Поправка ΔTv';
 
