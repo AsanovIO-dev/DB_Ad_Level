@@ -1,167 +1,175 @@
+begin;
+do $$
+begin
+    drop function if exists public.check_input_params(public.input_params);
+    drop type if exists public.input_params;
+    drop table if exists public.input_param_errors;
+ 
+    create table public.input_param_errors
+    (
+        id         integer,
+        param_name text,
+        min_value  numeric,
+        max_value  numeric,
+        error_text text
+    );
+    comment on table public.input_param_errors is 'Ошибки входных параметров';
+    comment on column public.input_param_errors.id is 'Уникальный код';
+    comment on column public.input_param_errors.param_name is 'Имя параметра';
+    comment on column public.input_param_errors.min_value is 'Минимальное значение';
+    comment on column public.input_param_errors.max_value is 'Максимальное значение';
+    comment on column public.input_param_errors.error_text is 'Текст ошибки';
+ 
+    create type public.input_params as (
+        equipment_type text,     
+        height         integer,  
+        temperature    numeric,  
+        pressure       integer,   
+        wind_direction integer,
+        wind_speed     integer,
+        bullet_drift   integer  
+    );
+end
+$$;
+commit;
+ 
 
--- 1. positions -> military_ranks
-alter table positions rename to military_ranks;
-alter table military_ranks rename column code to id; 
-alter table military_ranks rename column name to description;
+begin;
+do $$
+begin
+    insert into public.input_param_errors (id, param_name, min_value, max_value, error_text) values
+        (1, 'equipment_type',  null, null, 'Тип оборудования: должен быть ДМК или ВР'),
+        (2, 'height',          null, null, 'Высота метеопоста: значение не указано'),
+        (3, 'temperature',     -58,  58,   'Температура: от -58 до 58, один знак после запятой'),
+        (4, 'pressure',        500,  900,  'Давление: от 500 до 900'),
+        (5, 'wind_direction',  0,    59,   'Направление ветра: от 0 до 59'),
+        (6, 'wind_speed',      0,    15,   'Скорость ветра: от 0 до 15'),
+        (7, 'bullet_drift',    0,    150,  'Дальность сноса пуль: от 0 до 150');
+end
+$$;
+commit;
+ 
+ 
 
-comment on table military_ranks is 'Справочник должностей';
-comment on column military_ranks.id is 'Уникальный код';
-comment on column military_ranks.description is 'Описание';
+begin;
+do $$
+begin
+    alter table public.input_param_errors add constraint pk_input_param_errors primary key (id);
+    alter table public.input_param_errors add constraint uq_input_param_errors_name unique (param_name);
+    alter table public.input_param_errors alter column param_name set not null;
+    alter table public.input_param_errors alter column error_text set not null;
+end
+$$;
+commit;
+ 
+ 
 
+begin;
+do $$
+begin
+    create function public.check_input_params(p_params public.input_params)
+    returns text
+    language plpgsql
+    as $func$
+    declare
+        var_errors text[] := '{}';
+        var_rule   public.input_param_errors;
+    begin
 
--- 2. equipment_types -> measurment_types
-alter table equipment_types rename to measurment_types;
-alter table measurment_types rename column code to id;
-alter table measurment_types rename column name to description;
-alter table measurment_types add column short_name character varying(50);
+        select * into var_rule from public.input_param_errors where param_name = 'equipment_type';
+        if p_params.equipment_type is null or p_params.equipment_type not in ('ДМК', 'ВР') then
+            var_errors := array_append(var_errors, var_rule.error_text);
+        end if;
+ 
 
-update measurment_types set short_name = 'ДМК', description = 'Десантный метео комплект' where id = 1;
-update measurment_types set short_name = 'ВР', description = 'Ветровое ружьё' where id = 2;
+        select * into var_rule from public.input_param_errors where param_name = 'height';
+        if p_params.height is null then
+            var_errors := array_append(var_errors, var_rule.error_text);
+        end if;
+ 
 
-comment on table measurment_types is 'Измерительное оборудование';
-comment on column measurment_types.id is 'Уникальный код';
-comment on column measurment_types.short_name is 'Краткое наименование';
-comment on column measurment_types.description is 'Описание';
+        select * into var_rule from public.input_param_errors where param_name = 'temperature';
+        if p_params.temperature is null
+           or p_params.temperature < var_rule.min_value
+           or p_params.temperature > var_rule.max_value
+           or p_params.temperature <> round(p_params.temperature, 1) then
+            var_errors := array_append(var_errors, var_rule.error_text);
+        end if;
+ 
 
+        select * into var_rule from public.input_param_errors where param_name = 'pressure';
+        if p_params.pressure is null
+           or p_params.pressure < var_rule.min_value
+           or p_params.pressure > var_rule.max_value then
+            var_errors := array_append(var_errors, var_rule.error_text);
+        end if;
+ 
 
--- 3. users -> employees
-alter table users rename to employees;
-alter table employees rename column code to id;
-alter table employees rename column full_name to name;
-alter table employees rename column position_code to military_rank_id;
-alter table employees add column birthday timestamp;
-
-comment on table employees is 'Пользователи';
-comment on column employees.id is 'Уникальный код';
-comment on column employees.name is 'Наименование';
-comment on column employees.birthday is 'Дата рождения';
-comment on column employees.military_rank_id is 'Уникальный код должности'; 
-
-
--- 4. batches -> measurment_baths
-alter table batches rename to measurment_baths;
-alter table measurment_baths rename column code to id;
-alter table measurment_baths rename column user_code to emploee_id;
-alter table measurment_baths rename column equipment_type_code to measurment_type_id;
-alter table measurment_baths add column started timestamp default now();
-
-update measurment_baths set started = '2026-09-01' where id = 1;
-update measurment_baths set started = '2026-09-02' where id = 2;
-update measurment_baths set started = '2026-09-03' where id = 3;
-
-alter table measurment_baths drop column if exists name;
-
-comment on table measurment_baths is 'Пачки';
-comment on column measurment_baths.id is 'Уникальный код';
-comment on column measurment_baths.emploee_id is 'Уникальный код пользователя';
-comment on column measurment_baths.measurment_type_id is 'Уникальный код оборудования';
-comment on column measurment_baths.started is 'Дата измерения';
-
-
--- 6. parameters -> measurment_input_params
-alter table parameters rename to measurment_input_params;
-alter table measurment_input_params rename column code to id;
-alter table measurment_input_params rename column batch_code to measurment_bath_id;
-alter table measurment_input_params add column parameter_type_id integer;
-
-update measurment_input_params set parameter_type_id = 1 where name = 'Высота метеопоста';
-update measurment_input_params set parameter_type_id = 2 where name = 'Температура';
-update measurment_input_params set parameter_type_id = 3 where name = 'Давление';
-update measurment_input_params set parameter_type_id = 4 where name = 'Направление ветра';
-update measurment_input_params set parameter_type_id = 5 where name = 'Скорость ветра';
-update measurment_input_params set parameter_type_id = 6 where name = 'Дальность сноса пуль';
-
-alter table measurment_input_params drop column name;
-
--- value было текстом - переводим в число
-alter table measurment_input_params alter column value type numeric(8,2) using value::numeric;
-alter table measurment_input_params alter column value set default 0;
-
-comment on table measurment_input_params is 'Таблица с параметрами';
-comment on column measurment_input_params.id is 'Уникальный код';
-comment on column measurment_input_params.measurment_bath_id is 'Уникальный код пачки';
-comment on column measurment_input_params.parameter_type_id is 'Уникальный код типа параметра';
-comment on column measurment_input_params.value is 'Значение параметра';
-
-
-
--- 7. measurment_base_units
-create table measurment_base_units
-(
-	id integer,
-	description character varying(255)
-);
-
-comment on table measurment_base_units is 'Базовые единицы измерения';
-comment on column measurment_base_units.id is 'Уникальный код';
-comment on column measurment_base_units.description is 'Описание';
-
-insert into measurment_base_units(id, description)
-values(1, 'Длина'), (2, 'Температура'), (3, 'Давление'), (4, 'Угол'), (5, 'Скорость');
-
-
-
--- 8. measurment_units
-create table measurment_units
-(
-	id integer,
-	base_unit_id integer,
-	short_name character varying(50),
-	description text
-);
-
-comment on table measurment_units is 'Единицы измерения';
-comment on column measurment_units.id is 'Уникальный код';
-comment on column measurment_units.base_unit_id is 'Уникальный код базовой единицы измерения';
-comment on column measurment_units.short_name is 'Краткое наименование';
-comment on column measurment_units.description is 'Описание';
-
-insert into measurment_units(id, base_unit_id, short_name, description)
-values(1, 1, 'м', 'Метр'),
-(2, 2, 'С', 'Градус Цельсия'),
-(3, 3, 'гПа', 'Гектопаскаль'),
-(4, 4, 'град', 'Градус (угол)'),
-(5, 5, 'м/с', 'Метр в секунду');
+        select * into var_rule from public.input_param_errors where param_name = 'wind_direction';
+        if p_params.wind_direction is null
+           or p_params.wind_direction < var_rule.min_value
+           or p_params.wind_direction > var_rule.max_value then
+            var_errors := array_append(var_errors, var_rule.error_text);
+        end if;
 
 
--- 9. measurment_parameter_types
-create table measurment_parameter_types
-(
-	id integer,
-	unit_id integer,
-	short_name character varying(50),
-	description text
-);
+        if p_params.equipment_type = 'ДМК' then
+            select * into var_rule from public.input_param_errors where param_name = 'wind_speed';
+            if p_params.wind_speed is null
+               or p_params.wind_speed < var_rule.min_value
+               or p_params.wind_speed > var_rule.max_value then
+                var_errors := array_append(var_errors, var_rule.error_text);
+            end if;
+        end if;
+ 
+     
+        if p_params.equipment_type = 'ВР' then
+            select * into var_rule from public.input_param_errors where param_name = 'bullet_drift';
+            if p_params.bullet_drift is null
+               or p_params.bullet_drift < var_rule.min_value
+               or p_params.bullet_drift > var_rule.max_value then
+                var_errors := array_append(var_errors, var_rule.error_text);
+            end if;
+        end if;
+ 
 
-comment on table measurment_parameter_types is 'Типы параметров';
-comment on column measurment_parameter_types.id is 'Уникальный код';
-comment on column measurment_parameter_types.unit_id is 'Уникальный код единицы измерения';
-comment on column measurment_parameter_types.short_name is 'Краткое наименование';
-comment on column measurment_parameter_types.description is 'Описание';
+        return array_to_string(var_errors, '; ');
+    end;
+    $func$;
+ 
+    comment on function public.check_input_params(public.input_params) is
+        'Проверка входных параметров: возвращает список ошибок через точку с запятой, пустая строка - ошибок нет';
+end
+$$;
+commit;
+ 
+ 
+-- проверка
+select public.check_input_params(row('ДМК', 100, 15, 750, 0, 0, null)::public.input_params)
+    as "ДМК, значения по умолчанию";
+ 
+select public.check_input_params(row('ДМК', 100, 60.55, 400, 70, 20, null)::public.input_params)
+    as "ДМК, неверные значения";
+ 
+select public.check_input_params(row('ВР', null, 15, 750, 0, null, 200)::public.input_params)
+    as "ВР, неверные значения";
+ 
 
-insert into measurment_parameter_types(id, unit_id, short_name, description)
-values(1,1,'Высота','Высота площадки/точки замера'),
-(2,2,'Температура','Температура воздуха'),
-(3,3,'Давление','Атмосферное давление'),
-(4,4,'Направление ветра','Направление ветра'),
-(5,5,'Скорость ветра','Скорость ветра'),
-(6,1,'Дальность сноса пуль','Дальность сноса пуль');
 
 
-select
-	b.started as "Дата измерения",
-	b.id as "Номер пачки",
-	e.name as "ФИО сотрудника",
-	pt.short_name as "Наименование параметра",
-	u.short_name as "Единица измерения",
-	ip.value as "Значение"
-from measurment_baths b
-inner join employees e
-	on e.id = b.emploee_id
-inner join measurment_input_params ip
-	on ip.measurment_bath_id = b.id
-inner join measurment_parameter_types pt
-	on pt.id = ip.parameter_type_id
-inner join measurment_units u
-	on u.id = pt.unit_id
-order by b.id, pt.id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claude finished the response
