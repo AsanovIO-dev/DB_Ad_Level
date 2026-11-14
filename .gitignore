@@ -1,0 +1,5 @@
+_Infra/mssql-data
+_Infra/pgadmin
+_Infra/pgdata
+_Infra/.env
+_Infra/backup
