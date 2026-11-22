@@ -1,5 +1,5 @@
 do $$
-begin 
+begin
 	------ 1. Закупка продукции
 
 	-- Единицы измерения
@@ -64,8 +64,8 @@ begin
 	insert into dim_ranges(external_id, name, factor ) values (58,'160г',160.000);
 	insert into dim_ranges(external_id, name, factor ) values (59,'48г',48.000);
 	insert into dim_ranges(external_id, name, factor ) values (60,'90г',90.000);
-	
-	
+
+
 	-- Категории
 	delete from dim_categories;
 	insert into dim_categories(external_id, name, parent_id) values (373,'Бонусы',null);
@@ -162,95 +162,66 @@ begin
 	insert into dim_vendors(external_id, name, parent_id) values (199,'ООО Торгсервис Иркутск',31);
 	insert into dim_vendors(external_id, name, parent_id) values (200,'ООО "Элит Трейд"',31);
 	insert into dim_vendors(external_id, name, parent_id) values (201,'ZEN  19',31);
-		
+
 
 	-- Товары
 	delete from dim_products;
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4337,'1204073','Бананы', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4338,'1640465','Киви', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4339,'8042558','Лимоны', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4340,'8984333','Капуста', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4341,'7054405','Лук репчатый', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4342,'3802444','Морковь', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4343,'2118438','Огурец', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4344,'7006552','Перец болгарский', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4345,'1747804','Помидоры', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4346,'8460383','Чеснок свежий', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4347,'283836','Картофель', 200, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4348,'6633198','Ананас кус.', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4349,'1196043','Джем', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4350,'35425','Клубника', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4351,'3361756','Персик', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4352,'4356031','Кукуруза', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4353,'7358337','Перец Халапеньо', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4354,'3618497','Огурцы маринованные', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4355,'5286475','Маслины без кости', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4356,'1669088','Шампиньоны рез.', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4357,'6382248','Опята маринованые', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4358,'6692734','Фасоль красная', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4359,'6767384','Шпроты в масле', 201, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4360,'9123848','Морской коктейль', 202, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4361,'8382862','Креветки', 202, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4362,'6594869','Мидии очищен.', 202, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4363,'8465893','Крабовые палочки', 202, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4364,'3142350','Филе горбуши', 202, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4365,'8851029','Ветчина', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4366,'2046527','Пепперони', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4367,'2629782','Карбонад', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4368,'1137721','Грудинка (Бекон)', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4369,'5134303','Сосиски молочные в/с с/о', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4370,'8998805','Сосиски молочные 1 сорт', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4371,'8851942','Сардельки', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4372,'3404932','Колбаски охотничьи', 203, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4373,'3689765','Голень куриная маринов.', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4374,'8295254','Шашлык куриный маринов.', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4375,'5564472','Крылья куриные маринов.', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4376,'8439627','Филе куриное маринов.', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4377,'2493638','Фарш домашний с/м', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4378,'959947','Котлета с/г с/м для гамбургеров', 204, 42, 2);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4379,'6998823','Картофель фри', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4380,'1561668','Картофель дольки', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4381,'4083231','Булочка для гамбургера 100мм', 204, 69, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4382,'8725423','Соус Хайнц чесночный', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4383,'5801451','Соус Хайнц томатный', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4384,'5032142','Нагетсы куриные с/м', 204, 42, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4385,'9816268','Лепешка мексиканская', 204, 69, 1);
-	insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values (4386,'6279474','Тесто слоеное с/м', 204, 42, 1);
-		
-
-	-- Типы документов
-	delete from dim_document_types;
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (1,'Ввод состава нового рецепта',1,'Хозяйственный учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (2,'Редактирование рецепта',1,'Хозяйственный учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (3,'Установка цен продуктов',1,'Хозяйственный учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (24,'Корректировка остатков',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (22,'Пополнение счета',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (15,'Реализация продукции',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (23,'Списание со счета',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (9,'Счет-фактура полученная',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (10,'Товарно-транспортная накладная',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (6,'Товарный чек',2,'Финансовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (8,'Инвентаризация',3,'Складской учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (7,'Перемещение продуктов',3,'Складской учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (4,'Поступление продуктов',3,'Складской учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (5,'Списание продуктов',3,'Складской учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (21,'Акт поступления в кассу',4,'Кассовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (12,'Изъятие из кассы',4,'Кассовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (11,'Поступление в кассу',4,'Кассовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (17,'Приходно-кассовый ордер',4,'Кассовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (18,'Расходно-кассовый ордер',4,'Кассовый учет');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (14,'Возврат изделий',5,'Производство');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (20,'Инвентаризация изделий',5,'Производство');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (13,'Поступление изделий',5,'Производство');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (19,'Предварительный заказ',5,'Производство');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (16,'Списание изделий',5,'Производство');
-	insert into dim_document_types(external_id, name, parent_id, parent_name) values (27,'Бронирование апартаментов',7,'Бронирование');
+	insert into dim_products(external_id, code, name) values (4337,'1204073','Бананы');
+	insert into dim_products(external_id, code, name) values (4338,'1640465','Киви');
+	insert into dim_products(external_id, code, name) values (4339,'8042558','Лимоны');
+	insert into dim_products(external_id, code, name) values (4340,'8984333','Капуста');
+	insert into dim_products(external_id, code, name) values (4341,'7054405','Лук репчатый');
+	insert into dim_products(external_id, code, name) values (4342,'3802444','Морковь');
+	insert into dim_products(external_id, code, name) values (4343,'2118438','Огурец');
+	insert into dim_products(external_id, code, name) values (4344,'7006552','Перец болгарский');
+	insert into dim_products(external_id, code, name) values (4345,'1747804','Помидоры');
+	insert into dim_products(external_id, code, name) values (4346,'8460383','Чеснок свежий');
+	insert into dim_products(external_id, code, name) values (4347,'283836','Картофель');
+	insert into dim_products(external_id, code, name) values (4348,'6633198','Ананас кус.');
+	insert into dim_products(external_id, code, name) values (4349,'1196043','Джем');
+	insert into dim_products(external_id, code, name) values (4350,'35425','Клубника');
+	insert into dim_products(external_id, code, name) values (4351,'3361756','Персик');
+	insert into dim_products(external_id, code, name) values (4352,'4356031','Кукуруза');
+	insert into dim_products(external_id, code, name) values (4353,'7358337','Перец Халапеньо');
+	insert into dim_products(external_id, code, name) values (4354,'3618497','Огурцы маринованные');
+	insert into dim_products(external_id, code, name) values (4355,'5286475','Маслины без кости');
+	insert into dim_products(external_id, code, name) values (4356,'1669088','Шампиньоны рез.');
+	insert into dim_products(external_id, code, name) values (4357,'6382248','Опята маринованые');
+	insert into dim_products(external_id, code, name) values (4358,'6692734','Фасоль красная');
+	insert into dim_products(external_id, code, name) values (4359,'6767384','Шпроты в масле');
+	insert into dim_products(external_id, code, name) values (4360,'9123848','Морской коктейль');
+	insert into dim_products(external_id, code, name) values (4361,'8382862','Креветки');
+	insert into dim_products(external_id, code, name) values (4362,'6594869','Мидии очищен.');
+	insert into dim_products(external_id, code, name) values (4363,'8465893','Крабовые палочки');
+	insert into dim_products(external_id, code, name) values (4364,'3142350','Филе горбуши');
+	insert into dim_products(external_id, code, name) values (4365,'8851029','Ветчина');
+	insert into dim_products(external_id, code, name) values (4366,'2046527','Пепперони');
+	insert into dim_products(external_id, code, name) values (4367,'2629782','Карбонад');
+	insert into dim_products(external_id, code, name) values (4368,'1137721','Грудинка (Бекон)');
+	insert into dim_products(external_id, code, name) values (4369,'5134303','Сосиски молочные в/с с/о');
+	insert into dim_products(external_id, code, name) values (4370,'8998805','Сосиски молочные 1 сорт');
+	insert into dim_products(external_id, code, name) values (4371,'8851942','Сардельки');
+	insert into dim_products(external_id, code, name) values (4372,'3404932','Колбаски охотничьи');
+	insert into dim_products(external_id, code, name) values (4373,'3689765','Голень куриная маринов.');
+	insert into dim_products(external_id, code, name) values (4374,'8295254','Шашлык куриный маринов.');
+	insert into dim_products(external_id, code, name) values (4375,'5564472','Крылья куриные маринов.');
+	insert into dim_products(external_id, code, name) values (4376,'8439627','Филе куриное маринов.');
+	insert into dim_products(external_id, code, name) values (4377,'2493638','Фарш домашний с/м');
+	insert into dim_products(external_id, code, name) values (4378,'959947','Котлета с/г с/м для гамбургеров');
+	insert into dim_products(external_id, code, name) values (4379,'6998823','Картофель фри');
+	insert into dim_products(external_id, code, name) values (4380,'1561668','Картофель дольки');
+	insert into dim_products(external_id, code, name) values (4381,'4083231','Булочка для гамбургера 100мм');
+	insert into dim_products(external_id, code, name) values (4382,'8725423','Соус Хайнц чесночный');
+	insert into dim_products(external_id, code, name) values (4383,'5801451','Соус Хайнц томатный');
+	insert into dim_products(external_id, code, name) values (4384,'5032142','Нагетсы куриные с/м');
+	insert into dim_products(external_id, code, name) values (4385,'9816268','Лепешка мексиканская');
+	insert into dim_products(external_id, code, name) values (4386,'6279474','Тесто слоеное с/м');
 
 
 
 	-------- 2. Продажа товара
 
-	-- типы оперций журнала 
+	-- типы оперций журнала
 	delete from dim_operation_types;
 	insert into dim_operation_types(external_id, name, group_id, group_type) values (14,'Rent',14,'POS');
 	insert into dim_operation_types(external_id, name, group_id, group_type) values (15,'Lottery',15,'POS');
@@ -304,64 +275,81 @@ begin
 	insert into dim_operation_types(external_id, name, group_id, group_type) values (332,'esc',3,'POS');
 
 
+	-- типы оплаты
+	insert into dim_payment_types(external_id, name) values (211,'Наличные');
+    insert into dim_payment_types(external_id, name) values (212,'USD');
+    insert into dim_payment_types(external_id, name) values (213,'Мастер карта');
+    insert into dim_payment_types(external_id, name) values (214,'Карта клиента');
+    insert into dim_payment_types(external_id, name) values (216,'Безнал');
+    insert into dim_payment_types(external_id, name) values (217,'AMEX');
+    insert into dim_payment_types(external_id, name) values (218,'Сдача');
+    insert into dim_payment_types(external_id, name) values (220,'Талон');
+    insert into dim_payment_types(external_id, name) values (226,'Безнал');
+    insert into dim_payment_types(external_id, name) values (227,'Корректировка');
+    insert into dim_payment_types(external_id, name) values (250,'Безнал');
+    insert into dim_payment_types(external_id, name) values (251,'GIFT CARD');
+    insert into dim_payment_types(external_id, name) values (261,'Интернет магазин');
+    insert into dim_payment_types(external_id, name) values (263,'PRE-MASTER');
+    insert into dim_payment_types(external_id, name) values (264,'PRE-AMEX');
+    insert into dim_payment_types(external_id, name) values (266,'PRE-VISA');
 
 	-------- 3. Работа персонала
 
-	-- сотрудники 
+	-- сотрудники
 	delete from dim_personnel;
-	insert into dim_personnel(external_id, name, parent_id) values (897,'Администратор Barnet',9);
-	insert into dim_personnel(external_id, name, parent_id) values (898,'Безик Татьяна',9);
-	insert into dim_personnel(external_id, name, parent_id) values (899,'Шипицына Ольга',9);
-	insert into dim_personnel(external_id, name, parent_id) values (900,'Пакалюк Мария',1);
-	insert into dim_personnel(external_id, name, parent_id) values (901,'Скубало Кристина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (902,'Кустикова Татьяна',1);
-	insert into dim_personnel(external_id, name, parent_id) values (903,'Нагорная Анна',1);
-	insert into dim_personnel(external_id, name, parent_id) values (904,'Кафе 1 Касса 1',9);
-	insert into dim_personnel(external_id, name, parent_id) values (905,'Кафе 2 Касса 2',3);
-	insert into dim_personnel(external_id, name, parent_id) values (906,'Доставка Доставка',3);
-	insert into dim_personnel(external_id, name, parent_id) values (907,'Услуги гостиниц Услуги гостиниц',1);
-	insert into dim_personnel(external_id, name, parent_id) values (969,'Кушавина Алена',1);
-	insert into dim_personnel(external_id, name, parent_id) values (970,'Макаренко Татьяна',1);
-	insert into dim_personnel(external_id, name, parent_id) values (971,'Васильева Валентина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (972,'Черная Наталья',1);
-	insert into dim_personnel(external_id, name, parent_id) values (973,'Никулин Александр',1);
-	insert into dim_personnel(external_id, name, parent_id) values (974,'Быстрова Татьяна',1);
-	insert into dim_personnel(external_id, name, parent_id) values (975,'Берг Яна',1);
-	insert into dim_personnel(external_id, name, parent_id) values (976,'Черная Карина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (977,'Семенова Алина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (978,'Шведова Анастасия',1);
-	insert into dim_personnel(external_id, name, parent_id) values (979,'Пионова Мария',1);
-	insert into dim_personnel(external_id, name, parent_id) values (980,'Болгарова Ксения',1);
-	insert into dim_personnel(external_id, name, parent_id) values (981,'Смирнова Ирина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (982,'Шевченко Елена',1);
-	insert into dim_personnel(external_id, name, parent_id) values (983,'Чернобай Юлия',1);
-	insert into dim_personnel(external_id, name, parent_id) values (984,'Ражавикин Андрей',1);
-	insert into dim_personnel(external_id, name, parent_id) values (985,'Майборский Антон',1);
-	insert into dim_personnel(external_id, name, parent_id) values (986,'Англичанова Анастасия',1);
-	insert into dim_personnel(external_id, name, parent_id) values (987,'Семенова Алина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (988,'Медведева Валерия',1);
-	insert into dim_personnel(external_id, name, parent_id) values (989,'Кульпинская Ирина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (990,'Горбатенко Кристина',1);
-	insert into dim_personnel(external_id, name, parent_id) values (991,'Шибаева Елена',1);
-	insert into dim_personnel(external_id, name, parent_id) values (992,'Крицкая Алена',1);
-	insert into dim_personnel(external_id, name, parent_id) values (993,'Черных Дмитрий',1);
-	insert into dim_personnel(external_id, name, parent_id) values (994,'Модина Александра',1);
-	insert into dim_personnel(external_id, name, parent_id) values (995,'Плотникова Александра',1);
-	insert into dim_personnel(external_id, name, parent_id) values (996,'Кротова Наталья',1);
-	insert into dim_personnel(external_id, name, parent_id) values (997,'Пьянкова Злата',1);
-	insert into dim_personnel(external_id, name, parent_id) values (998,'Безик Татьяна',1);
-	insert into dim_personnel(external_id, name, parent_id) values (999,'Станиславская Александра',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1000,'Свешникова Дарья',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1001,'Писарева Вероника',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1002,'Губанова Анастасия',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1003,'Баженова Диана',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1004,'Емельянов Максим',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1005,'Пимкин Денис',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1006,'Смолина Вероника',1);
-	insert into dim_personnel(external_id, name, parent_id) values (1007,'Гострик Ольга',1);
+	insert into dim_personnel(external_id, name) values (897,'Администратор Barnet');
+	insert into dim_personnel(external_id, name) values (898,'Безик Татьяна');
+	insert into dim_personnel(external_id, name) values (899,'Шипицына Ольга');
+	insert into dim_personnel(external_id, name) values (900,'Пакалюк Мария');
+	insert into dim_personnel(external_id, name) values (901,'Скубало Кристина');
+	insert into dim_personnel(external_id, name) values (902,'Кустикова Татьяна');
+	insert into dim_personnel(external_id, name) values (903,'Нагорная Анна');
+	insert into dim_personnel(external_id, name) values (904,'Кафе 1 Касса 1');
+	insert into dim_personnel(external_id, name) values (905,'Кафе 2 Касса 2');
+	insert into dim_personnel(external_id, name) values (906,'Доставка Доставка');
+	insert into dim_personnel(external_id, name) values (907,'Услуги гостиниц Услуги гостиниц');
+	insert into dim_personnel(external_id, name) values (969,'Кушавина Алена');
+	insert into dim_personnel(external_id, name) values (970,'Макаренко Татьяна');
+	insert into dim_personnel(external_id, name) values (971,'Васильева Валентина');
+	insert into dim_personnel(external_id, name) values (972,'Черная Наталья');
+	insert into dim_personnel(external_id, name) values (973,'Никулин Александр');
+	insert into dim_personnel(external_id, name) values (974,'Быстрова Татьяна');
+	insert into dim_personnel(external_id, name) values (975,'Берг Яна');
+	insert into dim_personnel(external_id, name) values (976,'Черная Карина');
+	insert into dim_personnel(external_id, name) values (977,'Семенова Алина');
+	insert into dim_personnel(external_id, name) values (978,'Шведова Анастасия');
+	insert into dim_personnel(external_id, name) values (979,'Пионова Мария');
+	insert into dim_personnel(external_id, name) values (980,'Болгарова Ксения');
+	insert into dim_personnel(external_id, name) values (981,'Смирнова Ирина');
+	insert into dim_personnel(external_id, name) values (982,'Шевченко Елена');
+	insert into dim_personnel(external_id, name) values (983,'Чернобай Юлия');
+	insert into dim_personnel(external_id, name) values (984,'Ражавикин Андрей');
+	insert into dim_personnel(external_id, name) values (985,'Майборский Антон');
+	insert into dim_personnel(external_id, name) values (986,'Англичанова Анастасия');
+	insert into dim_personnel(external_id, name) values (987,'Семенова Алина');
+	insert into dim_personnel(external_id, name) values (988,'Медведева Валерия');
+	insert into dim_personnel(external_id, name) values (989,'Кульпинская Ирина');
+	insert into dim_personnel(external_id, name) values (990,'Горбатенко Кристина');
+	insert into dim_personnel(external_id, name) values (991,'Шибаева Елена');
+	insert into dim_personnel(external_id, name) values (992,'Крицкая Алена');
+	insert into dim_personnel(external_id, name) values (993,'Черных Дмитрий');
+	insert into dim_personnel(external_id, name) values (994,'Модина Александра');
+	insert into dim_personnel(external_id, name) values (995,'Плотникова Александра');
+	insert into dim_personnel(external_id, name) values (996,'Кротова Наталья');
+	insert into dim_personnel(external_id, name) values (997,'Пьянкова Злата');
+	insert into dim_personnel(external_id, name) values (998,'Безик Татьяна');
+	insert into dim_personnel(external_id, name) values (999,'Станиславская Александра');
+	insert into dim_personnel(external_id, name) values (1000,'Свешникова Дарья');
+	insert into dim_personnel(external_id, name) values (1001,'Писарева Вероника');
+	insert into dim_personnel(external_id, name) values (1002,'Губанова Анастасия');
+	insert into dim_personnel(external_id, name) values (1003,'Баженова Диана');
+	insert into dim_personnel(external_id, name) values (1004,'Емельянов Максим');
+	insert into dim_personnel(external_id, name) values (1005,'Пимкин Денис');
+	insert into dim_personnel(external_id, name) values (1006,'Смолина Вероника');
+	insert into dim_personnel(external_id, name) values (1007,'Гострик Ольга');
 
 
-	-- права 
+	-- права
 	delete from dim_security_objects;
 	insert into dim_security_objects(external_id, name, code, group_name, system_name) values (1,'Форма настроек','dlgProperties','Прочее','Manager');
 	insert into dim_security_objects(external_id, name, code, group_name, system_name) values (2,'Карточка клиента','dlgReferensClientItem','Справочники','Manager');
@@ -423,7 +411,7 @@ begin
 	insert into dim_storages(external_id, name) values (41,'Склад');
 
 
-	-- типы складских операций 
+	-- типы складских операций
 	delete from dim_storage_operation_types;
 	insert into dim_storage_operation_types(external_id, name, factor) values (1,'Поступление',1);
 	insert into dim_storage_operation_types(external_id, name, factor) values (2,'Списание',-1);
@@ -434,54 +422,53 @@ begin
 
 	-- причины списания
 	delete from dim_write_off_reasons;
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (156,'',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (180,'',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (126,'ZEN 19',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (134,'ZEN 33',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (27,'Банкет Солдатовых',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (103,'Внесение в кассу',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (100,'Выдача из кассы',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (64,'Дигустация',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (23,'На приготовление обедов',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (141,'Отходы',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (26,'Переработка',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (1,'Порча продукта',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (7,'Сотрудникам по заработную плату',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (173,'Срок годности',null);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (22,'Отходы производства',1);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (139,'Алентьева (Миронова) Лида',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (121,'Берг Яна',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (206,'Бычинская Кристина',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (38,'Васильева Валентина',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (198,'Дьяченко Тоня',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (16,'Запорожская Е.В',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (138,'КУРЬЕР',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (122,'Лукьянов В.В.',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (132,'Лукьянова Анастасия ',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (154,'Морозова Анна',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (164,'Попова Галина',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (208,'Путина Екатерина',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (193,'Смирнова Наталья',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (157,'Тхагапсова ТВ',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (207,'Чирикова Елизавета',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (205,'Яременко Софья',7);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (107,'Арендные',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (101,'Выдача аванса',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (102,'Выдача з/п',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (113,'З/п курьерам',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (114,'Корректировка',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (108,'На ресепшн',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (111,'Поставщики',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (115,'Прочее',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (110,'Размен касса 2',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (112,'Размен курьерам',100);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (105,'Арендные',103);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (109,'Барка',103);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (116,'Корректировка',103);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (136,'Предоплата за банкет',103);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (117,'Прочее',103);
-    insert into dim_write_off_reasons(external_id, name, parent_id) values (104,'Размен',103);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (156,'',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (180,'',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (126,'ZEN 19',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (134,'ZEN 33',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (27,'Банкет Солдатовых',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (103,'Внесение в кассу',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (100,'Выдача из кассы',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (64,'Дигустация',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (23,'На приготовление обедов',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (141,'Отходы',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (26,'Переработка',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (1,'Порча продукта',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (7,'Сотрудникам по заработную плату',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (173,'Срок годности',null);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (22,'Отходы производства',1);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (139,'Алентьева (Миронова) Лида',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (121,'Берг Яна',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (206,'Бычинская Кристина',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (38,'Васильева Валентина',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (198,'Дьяченко Тоня',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (16,'Запорожская Е.В',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (138,'КУРЬЕР',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (122,'Лукьянов В.В.',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (132,'Лукьянова Анастасия ',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (154,'Морозова Анна',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (164,'Попова Галина',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (208,'Путина Екатерина',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (193,'Смирнова Наталья',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (157,'Тхагапсова ТВ',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (207,'Чирикова Елизавета',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (205,'Яременко Софья',7);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (107,'Арендные',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (101,'Выдача аванса',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (102,'Выдача з/п',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (113,'З/п курьерам',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (114,'Корректировка',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (108,'На ресепшн',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (111,'Поставщики',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (115,'Прочее',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (110,'Размен касса 2',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (112,'Размен курьерам',100);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (105,'Арендные',103);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (109,'Барка',103);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (116,'Корректировка',103);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (136,'Предоплата за банкет',103);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (117,'Прочее',103);
+	insert into dim_write_off_reasons(external_id, name, parent_id) values (104,'Размен',103);
 
 end
-$$
-	
+$$;
