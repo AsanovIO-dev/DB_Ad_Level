@@ -6,7 +6,7 @@
 select id, sizeid as name, 
 portionrate as factor from [size] 
 
-select 'insert into dim_ranges(external_id, name, factor ) values ('
+select '    insert into dim_ranges(external_id, name, factor ) values ('
     + cast(id as varchar(max)) + ','''   
     + [sizeid] + ''','  
     + caST(portionrate as varchar(max))   + ');' 
@@ -24,7 +24,7 @@ select id,  description as name,
 ) as t1
 order by parent_id, name
 
-select 'insert into dim_categories(external_id, name, parent_id) values ('
+select '    insert into dim_categories(external_id, name, parent_id) values ('
     + cast(id as varchar(max)) + ','''
     + [name] + ''','
     + isnull(cast(parent_id as varchar(max)), 'null') + ');'
@@ -48,7 +48,7 @@ select * from
 ) as t1 
 order by parent_id
 
-select 'insert into dim_vendors(external_id, name, parent_id) values ('
+select '    insert into dim_vendors(external_id, name, parent_id) values ('
     + cast(id as varchar(max)) + ','''
     + [name] + ''','
     + cast(parent_id as varchar(max)) + ');'
@@ -63,45 +63,15 @@ order by parent_id
 
 
 -- товары 
-select productid as code, description, categoryid, sizeid as range_id, flaging as kind  
+select id, productid as code, description as name
 from product
 
-select 'insert into dim_products(external_id, code, name, category_id, rangel_id, kind) values ('
+select '    insert into dim_products(external_id, code, name) values ('
     + cast(id as varchar(max)) + ','''
     + [productid] + ''','''
-    + [description] + ''', '
-    + isnull(cast(categoryid as varchar(max)), 'null') + ', '
-    + isnull(cast(sizeid as varchar(max)), 'null') + ', '
-    + isnull(cast(flaging as varchar(max)), 'null') + ');'
+    + [description] + ''');'
     as [sql]
-from product 
-
-
--- Типы документов
-select * from
-(
-    select t1.id, t1.description as name, t1.journalid as parent_id,
-    t2.journalname as parent_name
-    from bm_journaltypedocuments t1
-    inner join bm_journaltype t2 on t1.journalid = t2.id
-) as t1
-order by parent_id, name 
-
-select 'insert into dim_document_types(external_id, name, parent_id, parent_name) values ('
-    + cast(id as varchar(max)) + ','''
-    + [name] + ''','
-    + cast(parent_id as varchar(max)) + ','''
-    + [parent_name] + ');'
-    as [sql]
-FROM
-(
-    select t1.id, t1.description as name, t1.journalid as parent_id,
-    t2.journalname as parent_name
-    from bm_journaltypedocuments t1
-    inner join bm_journaltype t2 on t1.journalid = t2.id
-) as t1
-order by parent_id, name 
-
+from product
 
 
 -------- 2. Продажа товара
@@ -111,7 +81,7 @@ select transtypeid as id, description as name,
 transgroupid as group_id, previewgrouptype as group_type
 from transtype
 
-select 'insert into dim_operation_types(external_id, name, group_id, group_type) values ('
+select '    insert into dim_operation_types(external_id, name, group_id, group_type) values ('
     + cast(transtypeid as varchar(max)) + ','''
     + coalesce(description, '') + ''','
     + isnull(cast(transgroupid as varchar(max)), 'null') + ','''
@@ -120,25 +90,29 @@ select 'insert into dim_operation_types(external_id, name, group_id, group_type)
 from transtype
 
 
+-- типы оплаты
+select paymenttypeid as id, description as name
+from paymenttype
+
+select '    insert into dim_payment_types(external_id, name) values ('
+    + cast(paymenttypeid as varchar(max)) + ','''
+    + description + ''');'
+    as [sql]
+from paymenttype
+
+
 
 -------- 3. Работа персонала
 
 -- сотрудники 
 
-select * from
-(
-    select t1.personid as id,
-    ltrim(rtrim(coalesce(t1.lastname, '') + ' ' + coalesce(t1.firstname, ''))) as name,
-    t1.securityaccess as parent_id,
-    t2.[description] as parent_name
-    from personnel t1
-    left join securityaccess t2 on t1.securityaccess = t2.securityaccessid
-) as t1 order by parent_id
+select personid as id,
+ltrim(rtrim(coalesce(lastname, '') + ' ' + coalesce(firstname, ''))) as name
+from personnel
 
-select 'insert into dim_personnel(external_id, name, parent_id) values ('
+select '    insert into dim_personnel(external_id, name) values ('
     + cast(personid as varchar(max)) + ','''
-    + ltrim(rtrim(coalesce(lastname, '') + ' ' + coalesce(firstname, ''))) + ''','
-    + cast(securityaccess as varchar(max)) + ');'
+    + ltrim(rtrim(coalesce(lastname, '') + ' ' + coalesce(firstname, ''))) + ''');'
     as [sql]
 from personnel
 
@@ -148,7 +122,7 @@ select id, description as name, objectname as code,
 securitygroup as group_name, parentsystem as system_name
 from bm_securityobjects
 
-select 'insert into dim_security_objects(external_id, name, code, group_name, system_name) values ('
+select '    insert into dim_security_objects(external_id, name, code, group_name, system_name) values ('
     + cast(id as varchar(max)) + ','''
     + description + ''','''
     + objectname + ''','''
@@ -166,7 +140,7 @@ from bm_securityobjects
 select id, description as name
 from storages
 
-select 'insert into dim_storages(external_id, name) values ('
+select '    insert into dim_storages(external_id, name) values ('
     + cast(id as varchar(max)) + ','''
     + description + ''');'
     as [sql]
@@ -177,7 +151,7 @@ from storages
 select id, description as name, factor
 from bm_storageoperationstype
 
-select 'insert into dim_storage_operation_types(external_id, name, factor) values ('
+select '    insert into dim_storage_operation_types(external_id, name, factor) values ('
     + cast(id as varchar(max)) + ','''
     + description + ''','
     + cast(factor as varchar(max)) + ');'
