@@ -71,9 +71,6 @@ begin
 		external_id bigint,
 		code text,
 		name text,
-		category_id bigint,
-		rangel_id bigint,
-		kind int,
 		date_add timestamp default now()
 	);
 
@@ -82,32 +79,8 @@ begin
 	comment on column dim_products.external_id is 'Код в базе Front (product.id)';
 	comment on column dim_products.code is 'Код товара (product.productid)';
 	comment on column dim_products.name is 'Наименование товара (product.description)';
-	comment on column dim_products.category_id is 'Код категории в базе Front (external_id категории, product.categoryid)';
-	comment on column dim_products.range_id is 'Код единицы измерения в базе Front (external_id единицы, product.sizeid)';
-	comment on column dim_products.kind is 'Вид позиции (product.flaging): 1 блюдо, 2 ингредиент';
 	comment on column dim_products.date_add is 'Дата добавления записи';
 
-
-	-- Типы документов
-	create sequence seq_dim_document_types;
-
-	create table dim_document_types
-	(
-		id bigint primary key default nextval('public.seq_dim_document_types'),
-		external_id bigint,
-		name text,
-		parent_id bigint,
-		parent_name text,
-		date_add timestamp default now()
-	);
-
-	comment on table dim_document_types is 'Ресурсы: типы документов (источник: front, таблицы bm_journaltypedocuments и bm_journaltype)';
-	comment on column dim_document_types.id is 'Внутренний код';
-	comment on column dim_document_types.external_id is 'Код в базе Front (bm_journaltypedocuments.id)';
-	comment on column dim_document_types.name is 'Название типа документа (bm_journaltypedocuments.description)';
-	comment on column dim_document_types.parent_id is 'Код вида журнала в базе Front (bm_journaltype.id)';
-	comment on column dim_document_types.parent_name is 'Название вида журнала (bm_journaltype.journalname)';
-	comment on column dim_document_types.date_add is 'Дата добавления записи';
 
 
 	------ 2. Продажа товара
@@ -134,6 +107,23 @@ begin
 	comment on column dim_operation_types.date_add is 'Дата добавления записи';
 
 
+	-- Типы оплаты
+	create sequence seq_dim_payment_types;
+
+	create table dim_payment_types
+	(
+		id bigint primary key default nextval('public.seq_dim_payment_types'),
+		external_id bigint,
+		name text,
+		date_add timestamp default now()
+	);
+
+	comment on table dim_payment_types is 'Ресурсы: типы оплаты (источник: front, таблица paymenttype)';
+	comment on column dim_payment_types.id is 'Внутренний код';
+	comment on column dim_payment_types.external_id is 'Код в базе Front (paymenttype.paymenttypeid)';
+	comment on column dim_payment_types.name is 'Название типа оплаты (paymenttype.description)';
+	comment on column dim_payment_types.date_add is 'Дата добавления записи';
+
 	------ 3. Работа персонала
 
 	-- Сотрудники
@@ -144,7 +134,6 @@ begin
 		id bigint primary key default nextval('public.seq_dim_personnel'),
 		external_id bigint,
 		name text,
-		parent_id bigint,
 		date_add timestamp default now()
 	);
 
@@ -152,7 +141,6 @@ begin
 	comment on column dim_personnel.id is 'Внутренний код';
 	comment on column dim_personnel.external_id is 'Код в базе Front (personnel.personid)';
 	comment on column dim_personnel.name is 'Фамилия и имя сотрудника (personnel.lastname, personnel.firstname)';
-	comment on column dim_personnel.parent_id is 'Код уровня доступа в базе Front (securityaccess.securityaccessid)';
 	comment on column dim_personnel.date_add is 'Дата добавления записи';
 
 
