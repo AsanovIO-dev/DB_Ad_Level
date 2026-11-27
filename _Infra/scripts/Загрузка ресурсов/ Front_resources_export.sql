@@ -85,27 +85,6 @@ begin
 
 	------ 2. Продажа товара
 
-	-- типы операций журнала
-	create sequence seq_dim_operation_types;
-
-	create table dim_operation_types
-	(
-		id bigint primary key default nextval('public.seq_dim_operation_types'),
-		external_id bigint,
-		name text,
-		group_id bigint,
-		group_type text,
-		date_add timestamp default now()
-	);
-
-	comment on table dim_operation_types is 'Ресурсы: типы операций журнала (источник: front, таблица transtype)';
-	comment on column dim_operation_types.id is 'Внутренний код';
-	comment on column dim_operation_types.external_id is 'Код в базе Front (transtype.transtypeid)';
-	comment on column dim_operation_types.name is 'Название типа операции (transtype.description), у части записей пусто';
-	comment on column dim_operation_types.group_id is 'Код группы операций (transtype.transgroupid), может быть пустым';
-	comment on column dim_operation_types.group_type is 'Вид группы (transtype.previewgrouptype): POS, Cash, Inventory и др.';
-	comment on column dim_operation_types.date_add is 'Дата добавления записи';
-
 
 	-- Типы оплаты
 	create sequence seq_dim_payment_types;
@@ -142,31 +121,6 @@ begin
 	comment on column dim_personnel.external_id is 'Код в базе Front (personnel.personid)';
 	comment on column dim_personnel.name is 'Фамилия и имя сотрудника (personnel.lastname, personnel.firstname)';
 	comment on column dim_personnel.date_add is 'Дата добавления записи';
-
-
-	-- Права
-	create sequence seq_dim_security_objects;
-
-	create table dim_security_objects
-	(
-		id bigint primary key default nextval('public.seq_dim_security_objects'),
-		external_id bigint,
-		name text,
-		code text,
-		group_name text,
-		system_name text,
-		date_add timestamp default now()
-	);
-
-	comment on table dim_security_objects is 'Ресурсы: права доступа, объекты безопасности (источник: front, таблица bm_securityobjects)';
-	comment on column dim_security_objects.id is 'Внутренний код';
-	comment on column dim_security_objects.external_id is 'Код в базе Front (bm_securityobjects.id)';
-	comment on column dim_security_objects.name is 'Название права (bm_securityobjects.description)';
-	comment on column dim_security_objects.code is 'Имя объекта (bm_securityobjects.objectname)';
-	comment on column dim_security_objects.group_name is 'Группа прав (bm_securityobjects.securitygroup)';
-	comment on column dim_security_objects.system_name is 'Система (bm_securityobjects.parentsystem): Manager или Front';
-	comment on column dim_security_objects.date_add is 'Дата добавления записи';
-
 
 	------ 4. Остатки
 
