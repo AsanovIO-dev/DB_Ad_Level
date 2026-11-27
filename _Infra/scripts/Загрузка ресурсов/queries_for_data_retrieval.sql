@@ -76,20 +76,6 @@ from product
 
 -------- 2. Продажа товара
 
--- типы оперций журнала 
-select transtypeid as id, description as name,
-transgroupid as group_id, previewgrouptype as group_type
-from transtype
-
-select '    insert into dim_operation_types(external_id, name, group_id, group_type) values ('
-    + cast(transtypeid as varchar(max)) + ','''
-    + coalesce(description, '') + ''','
-    + isnull(cast(transgroupid as varchar(max)), 'null') + ','''
-    + previewgrouptype + ''');'
-    as [sql]
-from transtype
-
-
 -- типы оплаты
 select paymenttypeid as id, description as name
 from paymenttype
@@ -115,23 +101,6 @@ select '    insert into dim_personnel(external_id, name) values ('
     + ltrim(rtrim(coalesce(lastname, '') + ' ' + coalesce(firstname, ''))) + ''');'
     as [sql]
 from personnel
-
-
--- права 
-select id, description as name, objectname as code,
-securitygroup as group_name, parentsystem as system_name
-from bm_securityobjects
-
-select '    insert into dim_security_objects(external_id, name, code, group_name, system_name) values ('
-    + cast(id as varchar(max)) + ','''
-    + description + ''','''
-    + objectname + ''','''
-    + securitygroup + ''','''
-    + coalesce(parentsystem, '') + ''');'
-    as [sql]
-from bm_securityobjects
-
-
 
 -------- 4. Остатки
 
